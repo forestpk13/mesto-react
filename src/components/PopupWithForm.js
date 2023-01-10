@@ -1,6 +1,6 @@
 export function PopupWithForm(props) {
   return (
-    <div className={`popup popup_content_${props.name}`}>
+    <div className={`popup popup_content_${props.name}${props.isOpen ? ' popup_opened' :''}`} onMouseDown={props.onClose}>
       <div className="popup__container">
         <button type="button" className="popup__close-button" aria-label="Закрыть"></button>
         <form className="form" id="profile" name={props.name} noValidate>

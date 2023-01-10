@@ -1,3 +1,4 @@
+import React from 'react';
 import { Header } from './Header.js';
 import { Main } from './Main.js';
 import { Footer } from './Footer.js';
@@ -7,17 +8,46 @@ import { ImagePopup } from './ImagePopup.js';
 
 function App() {
 
-  function handleEditAvatarClick() {
-    document.querySelector('.popup_content_edit-avatar').classList.add('popup_opened');
-  }
+  const [isEditProfilePopupOpened, setIsEditProfilePopupOpened] = React.useState(false);
+  const [isEditAvatarPopupOpened, setIsEditAvatarPopupOpened] = React.useState(false);
+  const [isAddPlacePopupOpened, setIsAddPlacePopupOpened] = React.useState(false);
 
   function handleEditProfileClick() {
-    document.querySelector('.popup_content_edit-profile').classList.add('popup_opened');
+    setIsEditProfilePopupOpened(true);
+  }
+
+  function handleEditAvatarClick() {
+    setIsEditAvatarPopupOpened(true);
   }
 
   function handleAddPlaceClick() {
-    document.querySelector('.popup_content_new-photo').classList.add('popup_opened');
+    setIsAddPlacePopupOpened(true);
   }
+
+  function closeAllPopups() {
+    setIsEditProfilePopupOpened(false);
+    setIsEditAvatarPopupOpened(false);
+    setIsAddPlacePopupOpened(false);
+  }
+
+  function handleClickOnPopup(evt) {
+    if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-button')) {
+      closeAllPopups();
+    }
+  }
+
+  const closeByEsc = (e) => {
+    if (e.key === 'Escape') {
+      closeAllPopups();
+    }
+  };
+
+  React.useEffect(() => {
+    if (isAddPlacePopupOpened || isEditAvatarPopupOpened || isEditProfilePopupOpened) {
+      document.addEventListener('keydown', closeByEsc);
+    }
+    return () => document.removeEventListener('keydown', closeByEsc);
+  }, [isAddPlacePopupOpened, isEditAvatarPopupOpened, isEditProfilePopupOpened]);
 
 
   return (
@@ -27,7 +57,7 @@ function App() {
       <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}/>
       <Footer />
 
-      <PopupWithForm title="Редактировать профиль" name="edit-profile">
+      <PopupWithForm title="Редактировать профиль" name="edit-profile" isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup}>
         <fieldset className="form__fields">
           <label className="form__field">
             <input type="text" className="form__item" id="profile-name" name="name" placeholder="Введите ваше имя" minLength="2" maxLength="40" required/>
@@ -39,7 +69,7 @@ function App() {
             </label>
         </fieldset>
       </PopupWithForm>
-      <PopupWithForm title="Обновить аватар" name="edit-avatar">
+      <PopupWithForm title="Обновить аватар" name="edit-avatar" isOpen={isEditAvatarPopupOpened} onClose={handleClickOnPopup}>
         <fieldset className="form__fields">
           <label className="form__field">
             <input type="url" className="form__item" id="avatar-link" name="avatar" placeholder="Ссылка на аватар" minLength="7" required/>
@@ -47,7 +77,7 @@ function App() {
           </label>
         </fieldset>
       </PopupWithForm>
-      <PopupWithForm title="Новое место" name="new-photo">
+      <PopupWithForm title="Новое место" name="new-photo" isOpen={isAddPlacePopupOpened} onClose={handleClickOnPopup}>
         <fieldset className="form__fields">
           <label className="form__field">
             <input type="text" className="form__item" id="photo-name" name="name" placeholder="Название" minLength="2" maxLength="30" required/>
