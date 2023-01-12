@@ -11,6 +11,8 @@ function App() {
   const [isEditProfilePopupOpened, setIsEditProfilePopupOpened] = React.useState(false);
   const [isEditAvatarPopupOpened, setIsEditAvatarPopupOpened] = React.useState(false);
   const [isAddPlacePopupOpened, setIsAddPlacePopupOpened] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isCardPopupOpened, setisCardPopupOpened] = React.useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpened(true);
@@ -28,6 +30,15 @@ function App() {
     setIsEditProfilePopupOpened(false);
     setIsEditAvatarPopupOpened(false);
     setIsAddPlacePopupOpened(false);
+    setisCardPopupOpened(false);
+    if (selectedCard.link) {
+      setTimeout(() => setSelectedCard({}), 500); //не убираю картинку пока показывается анимация закрытия попапа
+    }
+  }
+
+  function handleCardClick(card) {
+    setSelectedCard(card);
+    setisCardPopupOpened(true);
   }
 
   function handleClickOnPopup(evt) {
@@ -43,18 +54,18 @@ function App() {
   };
 
   React.useEffect(() => {
-    if (isAddPlacePopupOpened || isEditAvatarPopupOpened || isEditProfilePopupOpened) {
+    if (isAddPlacePopupOpened || isEditAvatarPopupOpened || isEditProfilePopupOpened || isCardPopupOpened) {
       document.addEventListener('keydown', closeByEsc);
     }
     return () => document.removeEventListener('keydown', closeByEsc);
-  }, [isAddPlacePopupOpened, isEditAvatarPopupOpened, isEditProfilePopupOpened]);
+  }, [isAddPlacePopupOpened, isEditAvatarPopupOpened, isEditProfilePopupOpened, isCardPopupOpened]);
 
 
   return (
     <div className="page">
 
       <Header />
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}/>
+      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
       <Footer />
 
       <PopupWithForm title="Редактировать профиль" name="edit-profile" isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup}>
@@ -89,10 +100,10 @@ function App() {
           </label>
         </fieldset>
       </PopupWithForm>
+      <ImagePopup card={selectedCard} isOpen={isCardPopupOpened} onClose={handleClickOnPopup} />
       <PopupWithForm title="Вы уверены?" name="confirmation">
         <button type="submit" className="button form__submit-button" name="confirm" value="Да">Да</button>
       </PopupWithForm>
-      <ImagePopup />
     </div>);
 }
 

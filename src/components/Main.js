@@ -1,10 +1,13 @@
 import React from 'react';
+import { LoadingScreen } from './LoadingScreen.js';
 import { api } from '../utils/Api.js';
+import { Card } from './Card.js';
 
-export function Main({onEditAvatar, onEditProfile, onAddPlace}) {
-  const [userName, setUserName] = React.useState();
-  const [userDescription, setUserDescription] = React.useState();
-  const [userAvatar, setUserAvatar] = React.useState();
+export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
+  const [isLoadingScreenClosed, setIsLoadingScreenClosed] = React.useState(false);
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
   const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
@@ -14,6 +17,7 @@ export function Main({onEditAvatar, onEditProfile, onAddPlace}) {
         setUserDescription(user.about);
         setUserAvatar(user.avatar);
         setCards(cards);
+        setIsLoadingScreenClosed(true);
       })
       .catch(err => {
         console.log(`Ошибка обращения к серверу ${err}`);
@@ -36,23 +40,16 @@ export function Main({onEditAvatar, onEditProfile, onAddPlace}) {
 
       <section className="elements">
         <ul className="elements__list">
-          {cards.map((card, i) => {
+          {cards.map((cardElement, i) => {
             return (
-              <li className="photo-card" key={i}>
-                <img className="photo-card__image" src={card.link} />
-                <div className="photo-card__description">
-                  <h2 className="photo-card__title">{card.name}</h2>
-                  <div>
-                    <button type="button" className="photo-card__like-button" aria-label="Нравится"></button>
-                    <p className="photo-card__likes">{card.likes.length}</p>
-                  </div>
-                </div>
-                <button type="button" className="photo-card__delete-button" aria-label="Удалить"></button>
-              </li>
+              <Card key={i} card={cardElement} onCardClick={onCardClick} />
             );
           })}
         </ul>
       </section>
+
+      <LoadingScreen isClose={isLoadingScreenClosed} />
+
     </main>
   );
 }
