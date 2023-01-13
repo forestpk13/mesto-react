@@ -40,7 +40,7 @@ export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
 
       <section className="elements">
         <ul className="elements__list">
-          {cards.map((cardElement, i) => {
+          {cards.map((cardElement) => {
             return (
               <li className="photo-card" key={cardElement._id}>
                 <Card
