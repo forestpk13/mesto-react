@@ -12,7 +12,7 @@ function App() {
   const [isEditAvatarPopupOpened, setIsEditAvatarPopupOpened] = React.useState(false);
   const [isAddPlacePopupOpened, setIsAddPlacePopupOpened] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
-  const [isCardPopupOpened, setisCardPopupOpened] = React.useState(false);
+  const [isCardPopupOpened, setIsCardPopupOpened] = React.useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpened(true);
@@ -30,7 +30,7 @@ function App() {
     setIsEditProfilePopupOpened(false);
     setIsEditAvatarPopupOpened(false);
     setIsAddPlacePopupOpened(false);
-    setisCardPopupOpened(false);
+    setIsCardPopupOpened(false);
     if (selectedCard.link) {
       setTimeout(() => setSelectedCard({}), 500); //не убираю картинку пока показывается анимация закрытия попапа
     }
@@ -38,7 +38,7 @@ function App() {
 
   function handleCardClick(card) {
     setSelectedCard(card);
-    setisCardPopupOpened(true);
+    setIsCardPopupOpened(true);
   }
 
   function handleClickOnPopup(evt) {
@@ -65,7 +65,11 @@ function App() {
     <div className="page">
 
       <Header />
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
+      <Main
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}/>
       <Footer />
 
       <PopupWithForm title="Редактировать профиль" name="edit-profile" isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup}>

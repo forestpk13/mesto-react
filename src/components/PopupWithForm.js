@@ -1,4 +1,4 @@
-export function PopupWithForm({props}) {
+export function PopupWithForm(props) {
   return (
     <div className={`popup popup_content_${props.name}${props.isOpen ? ' popup_opened' :''}`} onMouseDown={props.onClose}>
       <div className="popup__container">
