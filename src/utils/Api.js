@@ -15,16 +15,16 @@ class Api {
     return fetch(`${this._baseUrl}${path}`, {
       headers: this._headers
     })
-      .then(res => this._checkResponse(res));
+      .then(this._checkResponse);
   }
 
   _changeData(data, path) {
     return fetch(`${this._baseUrl}${path}`, {
-    method: 'PATCH',
-    headers: this._headers,
-    body: JSON.stringify(data)
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify(data)
     })
-      .then(res => this._checkResponse(res));
+      .then(this._checkResponse);
   }
 
   _handleLike(method, id) {
@@ -32,7 +32,7 @@ class Api {
       method: method,
       headers: this._headers
     })
-      .then(res => this._checkResponse(res));
+      .then(this._checkResponse);
   }
 
   setLike(id) {

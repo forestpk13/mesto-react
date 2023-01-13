@@ -42,7 +42,12 @@ export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
         <ul className="elements__list">
           {cards.map((cardElement, i) => {
             return (
-              <Card key={i} card={cardElement} onCardClick={onCardClick} />
+              <li className="photo-card" key={cardElement._id}>
+                <Card
+                  card={cardElement}
+                  onCardClick={onCardClick}
+                />
+              </li>
             );
           })}
         </ul>
