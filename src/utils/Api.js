@@ -35,6 +35,10 @@ class Api {
       .then(this._checkResponse);
   }
 
+  changeLikeCardStatus(id, isLiked) {
+    return isLiked ? this._handleLike('DELETE', id) : this._handleLike('PUT', id);
+  }
+
   setLike(id) {
     return this._handleLike('PUT', id);
   }

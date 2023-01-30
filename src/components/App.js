@@ -17,6 +17,8 @@ function App() {
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isCardPopupOpened, setIsCardPopupOpened] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([]);
+  const [isLoadingScreenClosed, setIsLoadingScreenClosed] = React.useState(false);
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpened(true);
@@ -45,6 +47,14 @@ function App() {
     setIsCardPopupOpened(true);
   }
 
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(user => user._id === currentUser._id);
+    api.changeLikeCardStatus(card._id, isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+      });
+  }
+
   function handleClickOnPopup(evt) {
     if (evt.target.classList.contains('popup') || evt.target.classList.contains('popup__close-button')) {
       closeAllPopups();
@@ -58,16 +68,16 @@ function App() {
   };
 
   React.useEffect(() => {
-    api.getProfileData()
-      .then((user) => {
+    Promise.all([api.getInitialCards(),api.getProfileData()])
+      .then(([cards,user]) => {
         setCurrentUser(user);
+        setCards(cards);
+        setIsLoadingScreenClosed(true);
       })
       .catch(err => {
         console.log(`Ошибка обращения к серверу ${err}`);
       });
   }, []);
-
-  console.log(currentUser);
 
   React.useEffect(() => {
     if (isAddPlacePopupOpened || isEditAvatarPopupOpened || isEditProfilePopupOpened || isCardPopupOpened) {
@@ -85,7 +95,10 @@ function App() {
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}/>
+          onCardClick={handleCardClick}
+          onCardLike={handleCardLike}
+          cards={cards}
+          loadingScreenStatus={isLoadingScreenClosed}/>
         <Footer />
 
         <PopupWithForm title="Редактировать профиль" name="edit-profile" isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup}>

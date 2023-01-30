@@ -1,24 +1,10 @@
 import React from 'react';
-import { LoadingScreen } from './LoadingScreen.js';
-import { api } from '../utils/Api.js';
 import { Card } from './Card.js';
+import { LoadingScreen } from './LoadingScreen.js';
 import { UserContext } from '../contexts/CurrentUserContext.js';
 
-export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
-  const [isLoadingScreenClosed, setIsLoadingScreenClosed] = React.useState(false);
-  const [cards, setCards] = React.useState([]);
+export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, cards, loadingScreenStatus}) {
   const user = React.useContext(UserContext);
-
-  React.useEffect(() => {
-    api.getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-        setIsLoadingScreenClosed(true);
-      })
-      .catch(err => {
-        console.log(`Ошибка обращения к серверу ${err}`);
-      });
-  },[]);
 
   return (
     <main className="content">
@@ -42,6 +28,7 @@ export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
                 <Card
                   card={cardElement}
                   onCardClick={onCardClick}
+                  onCardLike={onCardLike}
                 />
               </li>
             );
@@ -49,7 +36,7 @@ export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick}) {
         </ul>
       </section>
 
-      <LoadingScreen isClose={isLoadingScreenClosed} />
+      <LoadingScreen isClose={loadingScreenStatus} />
 
     </main>
   );
