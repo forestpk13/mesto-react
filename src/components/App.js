@@ -4,6 +4,7 @@ import { Main } from './Main.js';
 import { Footer } from './Footer.js';
 import { PopupWithForm } from './PopupWithForm.js';
 import { ImagePopup } from './ImagePopup.js';
+import { EditProfilePopup } from './EditProfilePopup.js';
 import { UserContext } from '../contexts/CurrentUserContext.js';
 import { api } from '../utils/Api.js';
 
@@ -22,6 +23,17 @@ function App() {
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpened(true);
+  }
+
+  function handleUpdateUser(userData) {
+    api.setProfileData(userData)
+      .then((newData) => {
+        setCurrentUser(newData);
+        closeAllPopups();
+      })
+      .catch(err => {
+        console.log(`Ошибка обращения к серверу ${err}`);
+      });
   }
 
   function handleEditAvatarClick() {
@@ -115,18 +127,7 @@ function App() {
           loadingScreenStatus={isLoadingScreenClosed}/>
         <Footer />
 
-        <PopupWithForm title="Редактировать профиль" name="edit-profile" isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup}>
-          <fieldset className="form__fields">
-            <label className="form__field">
-              <input type="text" className="form__item" id="profile-name" name="name" placeholder="Введите ваше имя" minLength="2" maxLength="40" required/>
-              <span className="form__error_field_profile-name form__error"></span>
-            </label>
-            <label className="form__field">
-              <input type="text" className="form__item" id="profile-description" name="about" placeholder="Укажите род деятельности" minLength="2" maxLength="200" required/>
-              <span className="form__error_field_profile-description form__error"></span>
-            </label>
-          </fieldset>
-        </PopupWithForm>
+        <EditProfilePopup isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup} onUpdateUser={handleUpdateUser}/>
         <PopupWithForm title="Обновить аватар" name="edit-avatar" isOpen={isEditAvatarPopupOpened} onClose={handleClickOnPopup}>
           <fieldset className="form__fields">
             <label className="form__field">
