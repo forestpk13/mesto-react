@@ -1,15 +1,13 @@
 import React from "react";
 import { UserContext } from "../contexts/CurrentUserContext";
 
-export function Card({card, onCardClick, onCardLike}) {
+export function Card({card, onCardClick, onCardLike, onCardDelete}) {
   const user = React.useContext(UserContext);
   const isOwn = card.owner._id === user._id;
   const isLiked = card.likes.some(i => i._id === user._id);
   const cardLikeButtonClassName = (
     `photo-card__like-button${isLiked ? ' photo-card__like-button_active': ''}`
   );
-
-  console.log(isLiked);
 
 
   return (
@@ -22,7 +20,7 @@ export function Card({card, onCardClick, onCardLike}) {
           <p className="photo-card__likes">{card.likes.length}</p>
         </div>
       </div>
-      {isOwn && <button type="button" className="photo-card__delete-button" aria-label="Удалить"></button>}
+      {isOwn && <button type="button" className="photo-card__delete-button" aria-label="Удалить" onClick={() => onCardDelete(card)}></button>}
     </>
   );
 }

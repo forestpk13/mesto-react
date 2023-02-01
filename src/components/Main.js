@@ -3,7 +3,7 @@ import { Card } from './Card.js';
 import { LoadingScreen } from './LoadingScreen.js';
 import { UserContext } from '../contexts/CurrentUserContext.js';
 
-export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, cards, loadingScreenStatus}) {
+export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCardLike, onCardDelete, cards, loadingScreenStatus}) {
   const user = React.useContext(UserContext);
 
   return (
@@ -29,6 +29,7 @@ export function Main({onEditAvatar, onEditProfile, onAddPlace, onCardClick, onCa
                   card={cardElement}
                   onCardClick={onCardClick}
                   onCardLike={onCardLike}
+                  onCardDelete={onCardDelete}
                 />
               </li>
             );
