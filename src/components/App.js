@@ -5,6 +5,7 @@ import { Footer } from './Footer.js';
 import { PopupWithForm } from './PopupWithForm.js';
 import { ImagePopup } from './ImagePopup.js';
 import { EditProfilePopup } from './EditProfilePopup.js';
+import { EditAvatarPopup } from './EditAvatarPopup.js';
 import { UserContext } from '../contexts/CurrentUserContext.js';
 import { api } from '../utils/Api.js';
 
@@ -38,6 +39,17 @@ function App() {
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpened(true);
+  }
+
+  function handleUpdateAvatar(avatar) {
+    api.setProfileAvatar(avatar)
+    .then((newData) => {
+      setCurrentUser(newData);
+      closeAllPopups();
+    })
+    .catch(err => {
+      console.log(`Ошибка обращения к серверу ${err}`);
+    });
   }
 
   function handleAddPlaceClick() {
@@ -128,14 +140,8 @@ function App() {
         <Footer />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup} onUpdateUser={handleUpdateUser}/>
-        <PopupWithForm title="Обновить аватар" name="edit-avatar" isOpen={isEditAvatarPopupOpened} onClose={handleClickOnPopup}>
-          <fieldset className="form__fields">
-            <label className="form__field">
-              <input type="url" className="form__item" id="avatar-link" name="avatar" placeholder="Ссылка на аватар" minLength="7" required/>
-              <span className="form__error form__error_field_avatar-link"></span>
-            </label>
-          </fieldset>
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpened} onClose={handleClickOnPopup} onUpdateAvatar={handleUpdateAvatar}/>
+
         <PopupWithForm title="Новое место" name="new-photo" isOpen={isAddPlacePopupOpened} onClose={handleClickOnPopup}>
           <fieldset className="form__fields">
             <label className="form__field">
