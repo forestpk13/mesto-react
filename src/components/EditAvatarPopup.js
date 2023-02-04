@@ -10,7 +10,7 @@ export function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
   }
 
   return (
-    <PopupWithForm title="Обновить аватар" name="edit-avatar" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
+    <PopupWithForm defaultButtonText="Сохранить" title="Обновить аватар" name="edit-avatar" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
       <fieldset className="form__fields">
         <label className="form__field">
           <input type="url" className="form__item" id="avatar-link" name="avatar" placeholder="Ссылка на аватар" minLength="7" ref={avatarRef} required/>

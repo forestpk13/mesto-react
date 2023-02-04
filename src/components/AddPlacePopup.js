@@ -14,7 +14,7 @@ export function AddPlacePopup({isOpen, onClose, onAddNewCard}) {
   }
 
   return (
-    <PopupWithForm title="Новое место" name="new-photo" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
+    <PopupWithForm defaultButtonText="Добавить" title="Новое место" name="new-photo" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
       <fieldset className="form__fields">
         <label className="form__field">
          <input type="text" className="form__item" id="photo-name" name="name" placeholder="Название" minLength="2" maxLength="30" ref={photoNameRef} required/>

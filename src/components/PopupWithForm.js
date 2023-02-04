@@ -6,7 +6,7 @@ export function PopupWithForm(props) {
         <form className="form" id="profile" name={props.name} onSubmit={props.onSubmit} noValidate>
           <h2 className="form__title">{props.title}</h2>
           {props.children}
-          <button type="submit" className="button form__submit-button" name="profile__save" value="Сохранить">Сохранить</button>
+          <button type="submit" className="button form__submit-button" name="profile__save" value="Сохранить">{props.defaultButtonText}</button>
         </form>
       </div>
     </div>

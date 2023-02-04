@@ -21,7 +21,7 @@ export function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
   }
 
   return (
-    <PopupWithForm title="Редактировать профиль" name="edit-profile" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
+    <PopupWithForm defaultButtonText="Сохранить" title="Редактировать профиль" name="edit-profile" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}>
       <fieldset className="form__fields">
         <label className="form__field">
           <input type="text" className="form__item" id="profile-name" name="name" value={name || ''} onChange={e => setName(e.target.value)} placeholder="Введите ваше имя" minLength="2" maxLength="40" required/>

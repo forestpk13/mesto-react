@@ -2,14 +2,13 @@ import React from 'react';
 import { Header } from './Header.js';
 import { Main } from './Main.js';
 import { Footer } from './Footer.js';
-import { PopupWithForm } from './PopupWithForm.js';
 import { ImagePopup } from './ImagePopup.js';
 import { EditProfilePopup } from './EditProfilePopup.js';
 import { EditAvatarPopup } from './EditAvatarPopup.js';
 import { UserContext } from '../contexts/CurrentUserContext.js';
 import { api } from '../utils/Api.js';
 import { AddPlacePopup } from './AddPlacePopup.js';
-
+import { PopupWithConfirmation } from './PopupWithConfirmation.js';
 
 
 function App() {
@@ -17,11 +16,18 @@ function App() {
   const [isEditProfilePopupOpened, setIsEditProfilePopupOpened] = React.useState(false);
   const [isEditAvatarPopupOpened, setIsEditAvatarPopupOpened] = React.useState(false);
   const [isAddPlacePopupOpened, setIsAddPlacePopupOpened] = React.useState(false);
+  const [isConfirmationPopupOpened, setIsConfirmationPopupOpened] = React.useState(false)
   const [selectedCard, setSelectedCard] = React.useState({});
+  const [cardToDelete, setCardToDelete] = React.useState({})
   const [isCardPopupOpened, setIsCardPopupOpened] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isLoadingScreenClosed, setIsLoadingScreenClosed] = React.useState(false);
+
+  function handleConfirmPopupOpen(card){
+    setIsConfirmationPopupOpened(true);
+    setCardToDelete(card);
+  }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpened(true);
@@ -73,6 +79,7 @@ function App() {
     setIsEditAvatarPopupOpened(false);
     setIsAddPlacePopupOpened(false);
     setIsCardPopupOpened(false);
+    setIsConfirmationPopupOpened(false);
     if (selectedCard.link) {
       setTimeout(() => setSelectedCard({}), 500); //не убираю картинку пока показывается анимация закрытия попапа
     }
@@ -94,10 +101,11 @@ function App() {
       });
   }
 
-  function handleDeleteCard(card) {
-    api.deleteCard(card._id)
+  function handleConfirmRemove() {
+    api.deleteCard(cardToDelete._id)
       .then(() => {
-        setCards((state) => state.filter((oldCard) => oldCard._id !== card._id))
+        setCards((state) => state.filter((oldCard) => oldCard._id !== cardToDelete._id));
+        closeAllPopups();
       })
       .catch(err => {
         console.log(`Ошибка обращения к серверу ${err}`);
@@ -129,11 +137,11 @@ function App() {
   }, []);
 
   React.useEffect(() => {
-    if (isAddPlacePopupOpened || isEditAvatarPopupOpened || isEditProfilePopupOpened || isCardPopupOpened) {
+    if (isAddPlacePopupOpened || isEditAvatarPopupOpened || isEditProfilePopupOpened || isCardPopupOpened || isConfirmationPopupOpened) {
       document.addEventListener('keydown', closeByEsc);
     }
     return () => document.removeEventListener('keydown', closeByEsc);
-  }, [isAddPlacePopupOpened, isEditAvatarPopupOpened, isEditProfilePopupOpened, isCardPopupOpened]);
+  }, [isAddPlacePopupOpened, isEditAvatarPopupOpened, isEditProfilePopupOpened, isCardPopupOpened, isConfirmationPopupOpened]);
 
 
   return (
@@ -146,7 +154,7 @@ function App() {
           onEditAvatar={handleEditAvatarClick}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
-          onCardDelete ={handleDeleteCard}
+          onCardDelete ={handleConfirmPopupOpen}
           cards={cards}
           loadingScreenStatus={isLoadingScreenClosed}/>
         <Footer />
@@ -154,11 +162,9 @@ function App() {
         <EditProfilePopup isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup} onUpdateUser={handleUpdateUser}/>
         <EditAvatarPopup isOpen={isEditAvatarPopupOpened} onClose={handleClickOnPopup} onUpdateAvatar={handleUpdateAvatar}/>
         <AddPlacePopup isOpen={isAddPlacePopupOpened} onClose={handleClickOnPopup} onAddNewCard={handleAddPlace}/>
-
         <ImagePopup card={selectedCard} isOpen={isCardPopupOpened} onClose={handleClickOnPopup} />
-        <PopupWithForm title="Вы уверены?" name="confirmation">
-          <button type="submit" className="button form__submit-button" name="confirm" value="Да">Да</button>
-        </PopupWithForm>
+        <PopupWithConfirmation isOpen={isConfirmationPopupOpened} onClose={handleClickOnPopup} onConfirmRemove={handleConfirmRemove}/>
+
       </UserContext.Provider>
     </div>);
 }
