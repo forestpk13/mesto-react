@@ -8,6 +8,7 @@ import { EditProfilePopup } from './EditProfilePopup.js';
 import { EditAvatarPopup } from './EditAvatarPopup.js';
 import { UserContext } from '../contexts/CurrentUserContext.js';
 import { api } from '../utils/Api.js';
+import { AddPlacePopup } from './AddPlacePopup.js';
 
 
 
@@ -54,6 +55,17 @@ function App() {
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpened(true);
+  }
+
+  function handleAddPlace(card) {
+    api.addCard(card)
+      .then((newCard) =>{
+        setCards([newCard, ...cards]);
+        closeAllPopups();
+      })
+      .catch(err => {
+        console.log(`Ошибка обращения к серверу ${err}`);
+      });
   }
 
   function closeAllPopups() {
@@ -141,19 +153,8 @@ function App() {
 
         <EditProfilePopup isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup} onUpdateUser={handleUpdateUser}/>
         <EditAvatarPopup isOpen={isEditAvatarPopupOpened} onClose={handleClickOnPopup} onUpdateAvatar={handleUpdateAvatar}/>
+        <AddPlacePopup isOpen={isAddPlacePopupOpened} onClose={handleClickOnPopup} onAddNewCard={handleAddPlace}/>
 
-        <PopupWithForm title="Новое место" name="new-photo" isOpen={isAddPlacePopupOpened} onClose={handleClickOnPopup}>
-          <fieldset className="form__fields">
-            <label className="form__field">
-              <input type="text" className="form__item" id="photo-name" name="name" placeholder="Название" minLength="2" maxLength="30" required/>
-              <span className="form__error_field_photo-name form__error"></span>
-            </label>
-            <label className="form__field">
-              <input type="url" className="form__item" id="photo-link" name="link" placeholder="Ссылка на картинку" required/>
-              <span className="form__error_field_photo-link form__error"></span>
-            </label>
-          </fieldset>
-        </PopupWithForm>
         <ImagePopup card={selectedCard} isOpen={isCardPopupOpened} onClose={handleClickOnPopup} />
         <PopupWithForm title="Вы уверены?" name="confirmation">
           <button type="submit" className="button form__submit-button" name="confirm" value="Да">Да</button>
