@@ -11,6 +11,8 @@ export function AddPlacePopup({isOpen, onClose, onAddNewCard}) {
       name: photoNameRef.current.value,
       link: photoLinkRef.current.value
     });
+    photoNameRef.current.value = '';
+    photoLinkRef.current.value = '';
   }
 
   return (
