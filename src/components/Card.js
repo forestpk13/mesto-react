@@ -12,15 +12,32 @@ export function Card({card, onCardClick, onCardLike, onCardDelete}) {
 
   return (
     <>
-      <img className="photo-card__image" src={card.link} onClick={() => onCardClick(card)} alt={card.name} />
+      <img
+        className="photo-card__image"
+        src={card.link}
+        onClick={() => onCardClick(card)}
+        alt={card.name}
+      />
       <div className="photo-card__description">
         <h2 className="photo-card__title">{card.name}</h2>
         <div>
-          <button type="button" className={cardLikeButtonClassName} aria-label="Нравится" onClick={() => onCardLike(card)}></button>
+          <button
+            type="button"
+            className={cardLikeButtonClassName}
+            aria-label="Нравится"
+            onClick={() => onCardLike(card)}
+          />
           <p className="photo-card__likes">{card.likes.length}</p>
         </div>
       </div>
-      {isOwn && <button type="button" className="photo-card__delete-button" aria-label="Удалить" onClick={() => onCardDelete(card)}></button>}
+      {isOwn &&
+        <button
+          type="button"
+          className="photo-card__delete-button"
+          aria-label="Удалить"
+          onClick={() => onCardDelete(card)}
+        />
+      }
     </>
   );
 }

@@ -158,13 +158,31 @@ function App() {
           cards={cards}
           loadingScreenStatus={isLoadingScreenClosed}/>
         <Footer />
-
-        <EditProfilePopup isOpen={isEditProfilePopupOpened} onClose={handleClickOnPopup} onUpdateUser={handleUpdateUser}/>
-        <EditAvatarPopup isOpen={isEditAvatarPopupOpened} onClose={handleClickOnPopup} onUpdateAvatar={handleUpdateAvatar}/>
-        <AddPlacePopup isOpen={isAddPlacePopupOpened} onClose={handleClickOnPopup} onAddNewCard={handleAddPlace}/>
-        <ImagePopup card={selectedCard} isOpen={isCardPopupOpened} onClose={handleClickOnPopup} />
-        <PopupWithConfirmation isOpen={isConfirmationPopupOpened} onClose={handleClickOnPopup} onConfirmRemove={handleConfirmRemove}/>
-
+        <EditProfilePopup
+          isOpen={isEditProfilePopupOpened}
+          onClose={handleClickOnPopup}
+          onUpdateUser={handleUpdateUser}
+        />
+        <EditAvatarPopup
+          isOpen={isEditAvatarPopupOpened}
+          onClose={handleClickOnPopup}
+          onUpdateAvatar={handleUpdateAvatar}
+        />
+        <AddPlacePopup
+          isOpen={isAddPlacePopupOpened}
+          onClose={handleClickOnPopup}
+          onAddNewCard={handleAddPlace}
+        />
+        <ImagePopup
+          card={selectedCard}
+          isOpen={isCardPopupOpened}
+          onClose={handleClickOnPopup}
+        />
+        <PopupWithConfirmation
+          isOpen={isConfirmationPopupOpened}
+          onClose={handleClickOnPopup}
+          onConfirmRemove={handleConfirmRemove}
+        />
       </UserContext.Provider>
     </div>);
 }

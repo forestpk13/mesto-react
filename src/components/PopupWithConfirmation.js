@@ -7,5 +7,12 @@ export function PopupWithConfirmation({isOpen, onClose, onConfirmRemove}) {
   }
 
   return (
-    <PopupWithForm defaultButtonText="Да" title="Вы уверены?" name="confirmation" isOpen={isOpen} onClose={onClose} onSubmit={handleSubmit}/>)
+    <PopupWithForm
+      defaultButtonText="Да"
+      title="Вы уверены?"
+      name="confirmation"
+      isOpen={isOpen}
+      onClose={onClose}
+      onSubmit={handleSubmit}
+    />)
 }
